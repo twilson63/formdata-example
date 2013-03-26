@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf8"></meta>
+    <title>Foo Uploads</title>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+    <style>
+      .fileinput-button {
+        position: relative;
+        overflow: hidden;
+        float: left;
+        margin-right: 4px;
+      }
+      .fileinput-button input {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        transform: translate(-300px, 0) scale(4);
+        font-size: 23px;
+        direction: ltr;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <span class="btn btn-primary btn-large fileinput-button">
+        <i class="icon-plus icon-white"></i>
+        Click to Upload
+        <input id="upload" type="file" name="upload"></input>
+      </span>
+      <progress value="0" max="100"></progress>
+      <div id="results"></div>
+    </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('#upload').change(function() {
+          console.log(this.files[0]);
+          var fd = new FormData();
+          fd.append('uploadFile', this.files[0]);
+          var xhr = new XMLHttpRequest();
+          xhr.addEventListener("progress", updateProgress, false);
+          xhr.addEventListener("load", transferComplete, false);
+          xhr.addEventListener("error", transferFailed, false);
+          xhr.addEventListener("abort", transferCanceled, false);
+          
+          xhr.open("POST", "uploads");
+          xhr.send(fd);
+        });
+      });
+      
+      function updateProgress(e) {
+        $('progress').attr('value', (e.loaded / e.total) * 100);
+      };
+      
+      function transferComplete() {
+        $('<p/>').text('upload complete!').appendTo('#results');
+      };
+      
+      function transferFailed() {
+        console.log('failed');
+      };
+      
+      function transferCanceled() {
+        console.log('cancelled');
+      };
+    </script>
+  </body>
+</html>
