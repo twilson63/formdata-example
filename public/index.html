@@ -44,10 +44,10 @@
           var fd = new FormData();
           fd.append('uploadFile', this.files[0]);
           var xhr = new XMLHttpRequest();
-          xhr.addEventListener("progress", updateProgress, false);
-          xhr.addEventListener("load", transferComplete, false);
-          xhr.addEventListener("error", transferFailed, false);
-          xhr.addEventListener("abort", transferCanceled, false);
+          xhr.upload.addEventListener("progress", updateProgress, false);
+          xhr.upload.addEventListener("load", transferComplete, false);
+          xhr.upload.addEventListener("error", transferFailed, false);
+          xhr.upload.addEventListener("abort", transferCanceled, false);
           
           xhr.open("POST", "uploads");
           xhr.send(fd);
